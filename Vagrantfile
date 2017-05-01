@@ -65,6 +65,7 @@ Vagrant.configure("2") do |config|
   nemidnoglefilsprogram_file = "nemidnoglefilsprogram-#{nemidnoglefilsprogram_version}.deb"
 
   config.vm.provision "shell", inline: <<-SHELL
+locale-gen da_DK.UTF-8
 apt-get update
 apt-get upgrade
 apt-get install -y wget firefox
