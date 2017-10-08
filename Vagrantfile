@@ -43,13 +43,16 @@ Vagrant.configure("2") do |config|
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
   #
-  # config.vm.provider "virtualbox" do |vb|
-  #   # Display the VirtualBox GUI when booting the machine
-  #   vb.gui = true
-  #
-  #   # Customize the amount of memory on the VM:
-  #   vb.memory = "1024"
-  # end
+  config.vm.provider "virtualbox" do |vb|
+    # Name for VirtualBox
+    vb.name = "NEMID_keyfile"
+
+    # Display the VirtualBox GUI when booting the machine
+    vb.gui = false
+
+    # Customize the amount of memory on the VM:
+    vb.memory = "1024"
+  end
   #
   # View the documentation for the provider you are using for more
   # information on available options.
@@ -63,7 +66,7 @@ Vagrant.configure("2") do |config|
 
   # https://addons.mozilla.org/da/firefox/addon/nemid-n%C3%B8glefilsprogram/
   # https://addons.mozilla.org/firefox/downloads/latest/nemid-n%C3%B8glefilsprogram/platform:2/addon-767341-latest.xpi
-  nemidnoglefilsprogram_version = "1.4.1"
+  nemidnoglefilsprogram_version = "1.5.1"
   nemidnoglefilsprogram_file = "nemidnoglefilsprogram-#{nemidnoglefilsprogram_version}.deb"
 
   config.vm.provision "shell", inline: <<-SHELL
