@@ -10,14 +10,14 @@ software der kommer fra NETS , så er der her en Virtuel maskine med
 firefox og den nødvendige software for at bruge NemID nøglefil.
 
 Start den virtuelle maskine
-===========================
+---------------------------
 
 ```
 vagrant up
 ```
 
 Start firefox
-=============
+-------------
 
 ```
 vagrant ssh -- -X LANG=da_DK.UTF-8 firefox -no-remote
