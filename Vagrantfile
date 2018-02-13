@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "ubuntu/zesty64"
+  config.vm.box = "ubuntu/artful64"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -37,7 +37,7 @@ Vagrant.configure("2") do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  config.vm.synced_folder "#{ENV['HOME']}/.oces", "/home/ubuntu/.oces"
+  config.vm.synced_folder "#{ENV['HOME']}/.oces", "/home/vagrant/.oces"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -51,7 +51,7 @@ Vagrant.configure("2") do |config|
     vb.gui = false
 
     # Customize the amount of memory on the VM:
-    vb.memory = "1024"
+    vb.memory = "2048"
   end
   #
   # View the documentation for the provider you are using for more
@@ -66,7 +66,7 @@ Vagrant.configure("2") do |config|
 
   # https://addons.mozilla.org/da/firefox/addon/nemid-n%C3%B8glefilsprogram/
   # https://addons.mozilla.org/firefox/downloads/latest/nemid-n%C3%B8glefilsprogram/platform:2/addon-767341-latest.xpi
-  nemidnoglefilsprogram_version = "1.5.1"
+  nemidnoglefilsprogram_version = "1.7.2"
   nemidnoglefilsprogram_file = "nemidnoglefilsprogram-#{nemidnoglefilsprogram_version}.deb"
 
   config.vm.provision "shell", inline: <<-SHELL
