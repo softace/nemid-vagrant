@@ -17,18 +17,6 @@ Start den virtuelle maskine
 vagrant up
 ```
 
-### Kendt problem
-
-Der er en kendt fejl
-(https://github.com/dotless-de/vagrant-vbguest/issues/278) som gør at
-første gang den virtuelle maskine skal bygges skal man køre følgende (den vil fejle efter første `vagrant up`):
-
-```
-vagrant up
-vagrant vbguest --do install
-vagrant reload
-```
-
 Start firefox
 -------------
 
