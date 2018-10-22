@@ -3,7 +3,7 @@
 
 # https://addons.mozilla.org/da/firefox/addon/nemid-n%C3%B8glefilsprogram/
 # https://addons.mozilla.org/firefox/downloads/latest/nemid-n%C3%B8glefilsprogram/platform:2/addon-767341-latest.xpi
-nemidnoglefilsprogram_version = "1.7.3"
+nemidnoglefilsprogram_version = "1.7.4"
 nemidnoglefilsprogram_file = "nemidnoglefilsprogram-#{nemidnoglefilsprogram_version}.deb"
 
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
