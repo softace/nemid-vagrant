@@ -70,6 +70,7 @@ Vagrant.configure("2") do |config|
   # end
 
   config.vm.provision "shell", inline: <<-SHELL
+timedatectl set-timezone Europe/Copenhagen
 locale-gen da_DK.UTF-8
 apt-get update
 apt-get upgrade
