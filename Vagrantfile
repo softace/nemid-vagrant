@@ -1,11 +1,6 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# https://addons.mozilla.org/da/firefox/addon/nemid-n%C3%B8glefilsprogram/
-# https://addons.mozilla.org/firefox/downloads/latest/nemid-n%C3%B8glefilsprogram/platform:2/addon-767341-latest.xpi
-nemidnoglefilsprogram_version = "1.10.0"
-nemidnoglefilsprogram_file = "nemidnoglefilsprogram-#{nemidnoglefilsprogram_version}.deb"
-
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
@@ -69,14 +64,19 @@ Vagrant.configure("2") do |config|
   #   push.app = "YOUR_ATLAS_USERNAME/YOUR_APPLICATION_NAME"
   # end
 
+  firefox_addon_version = "1.41"
+  firefox_addon_file = "nnp_firefox-#{firefox_addon_version}.xpi"
+  nemidnoglefilsprogram_version = "1.10.0"
+  nemidnoglefilsprogram_file = "nemidnoglefilsprogram-#{nemidnoglefilsprogram_version}.deb"
+
   config.vm.provision "shell", inline: <<-SHELL
 timedatectl set-timezone Europe/Copenhagen
 locale-gen da_DK.UTF-8
 apt-get update
 apt-get upgrade
 apt-get install -y jq unzip wget firefox firefox-locale-da
-wget --quiet https://addons.mozilla.org/firefox/downloads/latest/nemid-n%C3%B8glefilsprogram/platform:2/addon-767341-latest.xpi
-mv addon-767341-latest.xpi /usr/lib/firefox/browser/extensions/`unzip -qqc addon-767341-latest.xpi manifest.json | jq -r '.applications.gecko.id'`.xpi
+wget --quiet https://www.medarbejdersignatur.dk/nemid-noglefilsprogram/download/#{firefox_addon_file}
+mv #{firefox_addon_file} /usr/lib/firefox/browser/extensions/`unzip -qqc #{firefox_addon_file} manifest.json | jq -r '.applications.gecko.id'`.xpi
 wget --quiet https://www.medarbejdersignatur.dk/nemid-noglefilsprogram/download/#{nemidnoglefilsprogram_file}
 dpkg -i #{nemidnoglefilsprogram_file}
 SHELL
