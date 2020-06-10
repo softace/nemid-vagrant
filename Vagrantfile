@@ -64,6 +64,7 @@ Vagrant.configure("2") do |config|
   #   push.app = "YOUR_ATLAS_USERNAME/YOUR_APPLICATION_NAME"
   # end
 
+  #For details, see https://www.medarbejdersignatur.dk/nemid-noglefilsprogram/download/dlconfig.js
   firefox_addon_version = "1.41"
   firefox_addon_file = "nnp_firefox-#{firefox_addon_version}.xpi"
   nemidnoglefilsprogram_version = "1.10.0"
