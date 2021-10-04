@@ -75,7 +75,7 @@ timedatectl set-timezone Europe/Copenhagen
 locale-gen da_DK.UTF-8
 apt-get update
 apt-get upgrade
-apt-get install -y jq unzip wget firefox firefox-locale-da
+apt-get install -y jq unzip wget libgl-dev libegl-dev firefox firefox-locale-da
 wget --quiet https://www.medarbejdersignatur.dk/nemid-noglefilsprogram/download/#{firefox_addon_file}
 mv #{firefox_addon_file} /usr/lib/firefox/browser/extensions/`unzip -qqc #{firefox_addon_file} manifest.json | jq -r '.applications.gecko.id'`.xpi
 wget --quiet https://www.medarbejdersignatur.dk/nemid-noglefilsprogram/download/#{nemidnoglefilsprogram_file}
