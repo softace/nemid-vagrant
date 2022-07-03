@@ -86,4 +86,9 @@ wget --quiet https://www.medarbejdersignatur.dk/nemid-noglefilsprogram/download/
 dpkg -i #{nemidnoglefilsprogram_file}
 SHELL
 
+  config.vm.provision "shell", inline: <<-SHELL
+echo "Installation er færdig. Åbn en browser med"
+echo "vagrant ssh -- -X LANG=da_DK.UTF-8 firefox -no-remote"
+SHELL
+
 end
