@@ -7,16 +7,17 @@
 # you're doing.
 Vagrant.configure("2") do |config|
   if Vagrant.has_plugin?("vagrant-vbguest")
+#    config.vbguest.no_install  = true
     config.vbguest.auto_update = false
+#    config.vbguest.no_remote   = true
   end
-
   # The most common configuration options are documented and commented below.
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "ubuntu/focal64"
+  config.vm.box = "ubuntu/jammy64"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -74,21 +75,31 @@ Vagrant.configure("2") do |config|
   nemidnoglefilsprogram_version = "1.10.0"
   nemidnoglefilsprogram_file = "nemidnoglefilsprogram-#{nemidnoglefilsprogram_version}.deb"
 
+  # Basics
   config.vm.provision "shell", inline: <<-SHELL
 timedatectl set-timezone Europe/Copenhagen
 locale-gen da_DK.UTF-8
+update-locale LANG=da_DK.UTF-8
 apt-get update
 apt-get upgrade
 apt-get install -y jq unzip wget libgl-dev libegl-dev firefox firefox-locale-da
-wget --quiet https://www.medarbejdersignatur.dk/nemid-noglefilsprogram/download/#{firefox_addon_file}
-mv #{firefox_addon_file} /usr/lib/firefox/browser/extensions/`unzip -qqc #{firefox_addon_file} manifest.json | jq -r '.applications.gecko.id'`.xpi
+SHELL
+
+  # NemId Nøglefilsprogram
+  config.vm.provision "shell", inline: <<-SHELL
 wget --quiet https://www.medarbejdersignatur.dk/nemid-noglefilsprogram/download/#{nemidnoglefilsprogram_file}
 dpkg -i #{nemidnoglefilsprogram_file}
 SHELL
 
+  # Firefox extension
+  config.vm.provision "shell", privileged: false, inline: <<-SHELL
+wget --quiet https://www.medarbejdersignatur.dk/nemid-noglefilsprogram/download/#{firefox_addon_file}
+mv #{firefox_addon_file} /home/vagrant/snap/firefox/common/.mozilla/firefox/extensions/`unzip -qqc #{firefox_addon_file} manifest.json | jq -r '.applications.gecko.id'`.xpi
+SHELL
+
   config.vm.provision "shell", inline: <<-SHELL
 echo "Installation er færdig. Åbn en browser med"
-echo "vagrant ssh -- -X LANG=da_DK.UTF-8 firefox -no-remote"
+echo "vagrant ssh -- -X XAUTHORITY=/home/vagrant/.Xauthority firefox -no-remote"
 SHELL
 
 end
