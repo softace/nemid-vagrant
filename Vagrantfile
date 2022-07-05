@@ -11,6 +11,7 @@ Vagrant.configure("2") do |config|
     config.vbguest.auto_update = false
 #    config.vbguest.no_remote   = true
   end
+
   # The most common configuration options are documented and commented below.
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.
@@ -76,12 +77,20 @@ Vagrant.configure("2") do |config|
   nemidnoglefilsprogram_file = "nemidnoglefilsprogram-#{nemidnoglefilsprogram_version}.deb"
 
   # Basics
+  mozilla_firefox = <<-MOZILLA
+Package: *
+Pin: release o=LP-PPA-mozillateam
+Pin-Priority: 1001
+MOZILLA
+
   config.vm.provision "shell", inline: <<-SHELL
 timedatectl set-timezone Europe/Copenhagen
 locale-gen da_DK.UTF-8
 update-locale LANG=da_DK.UTF-8
+add-apt-repository --yes ppa:mozillateam/ppa
 apt-get update
-apt-get upgrade
+apt-get --yes upgrade
+echo -e "#{mozilla_firefox.gsub("\n","\\n")}" > /etc/apt/preferences.d/mozilla-firefox
 apt-get install -y jq unzip wget libgl-dev libegl-dev firefox firefox-locale-da
 SHELL
 
@@ -92,14 +101,14 @@ dpkg -i #{nemidnoglefilsprogram_file}
 SHELL
 
   # Firefox extension
-  config.vm.provision "shell", privileged: false, inline: <<-SHELL
+  config.vm.provision "shell", inline: <<-SHELL
 wget --quiet https://www.medarbejdersignatur.dk/nemid-noglefilsprogram/download/#{firefox_addon_file}
-mv #{firefox_addon_file} /home/vagrant/snap/firefox/common/.mozilla/firefox/extensions/`unzip -qqc #{firefox_addon_file} manifest.json | jq -r '.applications.gecko.id'`.xpi
+mv #{firefox_addon_file} /usr/lib/firefox/browser/extensions/`unzip -qqc #{firefox_addon_file} manifest.json | jq -r '.applications.gecko.id'`.xpi
 SHELL
 
   config.vm.provision "shell", inline: <<-SHELL
 echo "Installation er færdig. Åbn en browser med"
-echo "vagrant ssh -- -X XAUTHORITY=/home/vagrant/.Xauthority firefox -no-remote"
+echo "vagrant ssh -- -X firefox -no-remote"
 SHELL
 
 end
