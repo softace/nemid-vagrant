@@ -77,13 +77,14 @@ Vagrant.configure("2") do |config|
   nemidnoglefilsprogram_file = "nemidnoglefilsprogram-#{nemidnoglefilsprogram_version}.deb"
 
   # Basics
+  firefox_version="75.0+build3-0ubuntu1"
   config.vm.provision "shell", inline: <<-SHELL
 timedatectl set-timezone Europe/Copenhagen
 locale-gen da_DK.UTF-8
 update-locale LANG=da_DK.UTF-8
 apt-get update
 apt-get --yes upgrade
-apt-get install -y jq unzip wget libgl-dev libegl-dev firefox firefox-locale-da
+apt-get install -y jq unzip wget libgl-dev libegl-dev firefox=#{firefox_version} firefox-locale-da=#{firefox_version}
 SHELL
 
   # NemId Nøglefilsprogram
