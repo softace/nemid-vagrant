@@ -70,12 +70,6 @@ Vagrant.configure("2") do |config|
   #   push.app = "YOUR_ATLAS_USERNAME/YOUR_APPLICATION_NAME"
   # end
 
-  #For details, see https://www.medarbejdersignatur.dk/nemid-noglefilsprogram/download/dlconfig.js
-  firefox_addon_version = "1.41"
-  firefox_addon_file = "nnp_firefox-#{firefox_addon_version}.xpi"
-  nemidnoglefilsprogram_version = "1.10.0"
-  nemidnoglefilsprogram_file = "nemidnoglefilsprogram-#{nemidnoglefilsprogram_version}.deb"
-
   # Basics
   mozilla_firefox = <<-MOZILLA
 Package: *
@@ -95,15 +89,28 @@ apt-get install -y jq unzip wget libgl-dev libegl-dev firefox firefox-locale-da
 SHELL
 
   # NemId Nøglefilsprogram
+  nemidnoglefilsprogram_version = "1.10.0"
+  nemidnoglefilsprogram_file = "nemidnoglefilsprogram-#{nemidnoglefilsprogram_version}.deb"
   config.vm.provision "shell", inline: <<-SHELL
 wget --quiet https://www.medarbejdersignatur.dk/nemid-noglefilsprogram/download/#{nemidnoglefilsprogram_file}
 dpkg -i #{nemidnoglefilsprogram_file}
 SHELL
 
   # Firefox extension
+  #For details, see https://www.medarbejdersignatur.dk/nemid-noglefilsprogram/download/dlconfig.js
+  firefox_addon_version = "1.41"
+  firefox_addon_file = "nnp_firefox-#{firefox_addon_version}.xpi"
   config.vm.provision "shell", inline: <<-SHELL
 wget --quiet https://www.medarbejdersignatur.dk/nemid-noglefilsprogram/download/#{firefox_addon_file}
 mv #{firefox_addon_file} /usr/lib/firefox/browser/extensions/`unzip -qqc #{firefox_addon_file} manifest.json | jq -r '.applications.gecko.id'`.xpi
+SHELL
+
+  # Firefox extension user-agent switcher
+  uas_extension_version = "0.4.8"
+  uas_extension_file = "user_agent_string_switcher-#{uas_extension_version}.xpi"
+  config.vm.provision "shell", inline: <<-SHELL
+wget --quiet https://addons.mozilla.org/firefox/downloads/file/3952467/#{uas_extension_file}
+mv #{uas_extension_file} /usr/lib/firefox/browser/extensions/`unzip -qqc #{uas_extension_file} manifest.json | jq -r '.browser_specific_settings.gecko.id'`.xpi
 SHELL
 
   config.vm.provision "shell", inline: <<-SHELL
